@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 require('../components/products/ProductModel');
 require('../components/users/UserModel');
-const uri = "mongodb+srv://tnmod2003:01285740786Tin@atlascluster.atjjipv.mongodb.net/?retryWrites=true&w=majority";
-
+const MONGODB = require('../config');
+const uri = MONGODB.MONGODB_URI;
 
 
 const connect = async () => {
