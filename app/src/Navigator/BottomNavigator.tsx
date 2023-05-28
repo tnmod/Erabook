@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './../screens/homeScreen/HomeScreen';
+import HomeScreen from '../screens/home/HomeScreen';
 import TabBottomBarCustom from '../customs/TabBottomBarCustom';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import HomeHeader from '../screens/homeScreen/HomeHeader';
+import HomeHeader from '../screens/home/HomeHeader';
 
 
 const Tab = createBottomTabNavigator();

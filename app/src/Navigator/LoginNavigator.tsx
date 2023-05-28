@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import SignIn from '../screens/loginScreen/SignIn';
-import SignUp from '../screens/loginScreen/SignUp';
+import SignIn from '../screens/login/SignIn';
+import SignUp from '../screens/login/SignUp';
 import Icon from 'react-native-vector-icons/AntDesign'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';

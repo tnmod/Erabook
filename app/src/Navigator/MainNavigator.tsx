@@ -6,13 +6,13 @@ import { increment, decrement, selectCount } from '../redux/features/CounterSilc
 
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import SignIn from '../screens/loginScreen/SignIn';
-import SignUp from '../screens/loginScreen/SignUp';
-import Terms_Agreement from '../screens/loginScreen/Terms_Agreement';
+import SignIn from '../screens/login/SignIn';
+import SignUp from '../screens/login/SignUp';
+import Terms_Agreement from '../screens/login/Terms_Agreement';
 import Icon from 'react-native-vector-icons/AntDesign'
 import LoginNavigator from './LoginNavigator';
-import LoginScreen from '../screens/loginScreen/LoginScreen';
-import HomeScreen from '../screens/homeScreen/HomeScreen';
+import LoginScreen from '../screens/login/LoginScreen';
+import HomeScreen from '../screens/home/HomeScreen';
 import BottomNavigator from './BottomNavigator';
 const Stack = createStackNavigator();
 

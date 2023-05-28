@@ -25,10 +25,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { store } from './src/redux/app/store';
 import { Provider } from 'react-redux';
 import EbookItem from './src/components/Item/EbookItem';
-import DetailScreen from './src/screens/detailScreen/DetailScreen';
-import Notification from './src/screens/Notification/Notification';
-import Preferences from './src/screens/Preferences/Preferences';
-import Security from './src/screens/Securityy/Security';
+import DetailScreen from './src/screens/detail/DetailScreen';
+import Notification from './src/screens/setting/Notification';
+import Preferences from './src/screens/setting/Preferences';
+import Security from './src/screens/setting/Security';
 
 
 
