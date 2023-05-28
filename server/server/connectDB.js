@@ -7,7 +7,7 @@ const uri = "mongodb+srv://tnmod2003:<password>@atlascluster.atjjipv.mongodb.net
 
 const connect = async () => {
     try {
-        await mongoose.connect(url, {
+        await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
