@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 require('../components/products/ProductModel');
 require('../components/users/UserModel');
-const url = "mongodb+srv://tnmod2003:01285740786Tin@atlascluster.atjjipv.mongodb.net/erabook?retryWrites=true&w=majority";
+const uri = "mongodb+srv://tnmod2003:<password>@atlascluster.atjjipv.mongodb.net/?retryWrites=true&w=majority";
 
 
 
