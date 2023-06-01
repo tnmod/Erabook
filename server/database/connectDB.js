@@ -2,8 +2,16 @@ const mongoose = require('mongoose');
 require('../components/products/ProductModel');
 require('../components/users/UserModel');
 const MONGODB = require('../config');
-const uri = MONGODB.MONGODB_URI;
 
+
+
+const uri = MONGODB.MONGODB_URI;
+const mysqlConfig = {
+    host: 'localhost',
+    user: 'your_mysql_username',
+    password: 'your_mysql_password',
+    database: 'your_mysql_database',
+  };
 
 const connect = async () => {
     try {
@@ -14,7 +22,6 @@ const connect = async () => {
         console.log("Connected to MongoDB Atlas!");
 
 
-        // Sau khi hoàn thành, đóng kết nối
         // await mongoose.disconnect();
         // console.log("Disconnected from MongoDB Atlas!");
     } catch (error) {
