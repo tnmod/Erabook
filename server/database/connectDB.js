@@ -1,35 +1,40 @@
 const mongoose = require('mongoose');
-require('../components/products/ProductModel');
-require('../components/users/UserModel');
+const mysql = require('mysql2');
 const MONGODB = require('../config');
 
-
-
-const uri = MONGODB.MONGODB_URI;
+const mongoUri = MONGODB.MONGODB_URI;
 const mysqlConfig = {
-    host: 'localhost',
-    user: 'your_mysql_username',
-    password: 'your_mysql_password',
-    database: 'your_mysql_database',
+    host: '192.168.0.129',
+    port: 3306,
+    user: 'root',
+    password: "01285740786Tin'",
+    database: 'test_db',
   };
+  
+const connectMongo = async () => {
+  try {
+    await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB!");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
+};
 
-const connect = async () => {
-    try {
-        await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log("Connected to MongoDB Atlas!");
-
-
-        // await mongoose.disconnect();
-        // console.log("Disconnected from MongoDB Atlas!");
-    } catch (error) {
-        console.error("Error connecting to MongoDB Atlas:", error);
+const connectMySQL = () => {
+  const connection = mysql.createConnection(mysqlConfig);
+  connection.connect((error) => {
+    if (error) {
+      console.error("Error connecting to MySQL:", error);
+    } else {
+      console.log("Connected to MySQL!");
     }
-}
-
+  });
+};
 
 module.exports = {
-    connect
-}
+  connectMongo,
+  connectMySQL,
+};

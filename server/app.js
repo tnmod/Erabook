@@ -13,8 +13,8 @@ var productAPIRouter = require('./routes/api/ProductAPI');
 
 var session = require('express-session');
 var connectDB = require('./database/connectDB');
-connectDB.connect();
-
+//connectDB.connectMongo();
+connectDB.connectMySQL();
 
 var app = express();
 
