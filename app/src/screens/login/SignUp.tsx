@@ -1,4 +1,4 @@
-import { Animated, StyleSheet, Text, View } from 'react-native'
+import { Animated, StyleSheet, Text, ToastAndroid, View } from 'react-native'
 import React from 'react'
 import { Popins } from '../../components/popins'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -6,6 +6,7 @@ import { TextInput } from 'react-native'
 import { CheckBox } from '@rneui/themed'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
 
 
@@ -13,20 +14,74 @@ const SignUp: React.FC = () => {
     const navigation = useNavigation();
     const [checked, setChecked] = React.useState(false);
     const toggleCheckbox = () => setChecked(!checked);
+    
+    const [email, setemail] = React.useState('');
+    const [username, setusername] = React.useState('');
+    const [password, setpassword] = React.useState('');
+    const [confirm, setconfirm] = React.useState('');
+
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+    const passwordRegx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    const register = async () =>{
+        if(email.length == 0 || password.length == 0 || confirm.length == 0){
+            ToastAndroid.show("Nhập thiếu thông tin", ToastAndroid.SHORT)
+            return;
+        }
+        if(checked === false){
+            ToastAndroid.show("Phải chấp nhận điều khoản của chúng tôi", ToastAndroid.SHORT)
+
+            console.log("Phải chấp nhận điều khoản của chúng tôi");
+            return;
+        }
+        if(!emailRegex.test(email)){
+            console.log("Sai email");
+            ToastAndroid.show("Sai định dạng email", ToastAndroid.SHORT)
+            return;
+        }
+        if(!passwordRegx.test(password)){
+            console.log("Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số, 1 ký tự đặc biệt");
+            ToastAndroid.show("Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số, 1 ký tự đặc biệt", ToastAndroid.SHORT)
+            return;
+        }
+        if(!(password === confirm)){
+            console.log("Xác nhận mật khẩu sai");
+            ToastAndroid.show("Xác nhận mật khẩu sai", ToastAndroid.SHORT)
+            return;
+        }
+
+        try {
+            //đổi link
+            const result = await axios.post('http://192.168.1.101:3000/api/user/register', {email, password, username});
+            if(result.data.user == false || result.data.user == null){
+                console.log("Email đã được đăng ký");
+                ToastAndroid.show("Email đã được đăng ký", ToastAndroid.SHORT)
+                return;
+            }
+            else{
+                console.log(result.data.user);
+                navigation.navigate('SignIn' as never);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }
+
     return (
         <View style={styles.container}>
             <Text style={[styles.textHero, styles.text, {}]}>Create {"\n"}an account</Text>
             <View style={styles.containerInput}>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} />
+                    <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => {setemail(text); setusername(text);}}/>
                     <Icon name='user' size={18} color={'#637899'} />
                 </View>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} />
+                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} onChangeText={text => setpassword(text)}/>
                     <Icon name='mail' size={18} color={'#637899'} />
                 </View>
                 <Animated.View  style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} />
+                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} onChangeText={text => setconfirm(text)}/>
                     <Icon name='mail' size={18} color={'#637899'} />
                 </Animated.View>
             </View>
@@ -48,7 +103,7 @@ const SignUp: React.FC = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <TouchableOpacity style={[styles.buttonHero, styles.center, styles.sizeContainerNomal,]} >
+            <TouchableOpacity style={[styles.buttonHero, styles.center, styles.sizeContainerNomal,]} onPress={register}>
                 <Text style={[styles.text500, { color: 'white' }]} >Sign Up</Text>
             </TouchableOpacity>
             <Text style={[{ width: '100%', marginVertical: 32 }, styles.textCenter]}>Or sign up with</Text>

@@ -9,12 +9,13 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productAPIRouter = require('./routes/api/ProductAPI');
+var userAPIRouter = require('./routes/api/UserAPI');
 
 
 var session = require('express-session');
 var connectDB = require('./database/connectDB');
 connectDB.connectMongo();
-//connectDB.connectMySQL();
+// connectDB.connectMySQL();
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use(session({
 app.use('/api/product', productAPIRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api/user', userAPIRouter);
 
 
 // catch 404 and forward to error handler

@@ -4,7 +4,7 @@ const salt = bcrypt.genSaltSync(10);
 
 const getAll = async () => {
 
-    return users;
+    return await userModel.find();
 
 }
 
@@ -32,20 +32,13 @@ const findEmail = async (email) => {
 
 }
 
-const register = async (email, password, name, age, address, securityquestion, securityanswer, cart) => {
+const register = async (email, password, username) => {
     try {
         let hash = bcrypt.hashSync(password, salt);
         const newuser = {
             email: email,
             password: hash,
-            name: name,
-            age: age,
-            address: address,
-            security: {
-                securityquestion: securityquestion,
-                securityanswer: securityanswer,
-            },
-            cart: cart
+            username: username
         }
         let user = await userModel.create(newuser);
         return user;
@@ -54,6 +47,31 @@ const register = async (email, password, name, age, address, securityquestion, s
     }
 
 }
+
+// const register = async (email, password, name, age, address, securityquestion, securityanswer, cart) => {
+//     try {
+//         let hash = bcrypt.hashSync(password, salt);
+//         const newuser = {
+//             email: email,
+//             password: hash,
+//             name: name,
+//             age: age,
+//             address: address,
+//             security: {
+//                 securityquestion: securityquestion,
+//                 securityanswer: securityanswer,
+//             },
+//             cart: cart
+//         }
+//         let user = await userModel.create(newuser);
+//         return user;
+//     } catch (error) {
+//         return false;
+//     }
+
+// }
+
+
 const changepassword = async (email, newpassword, oldpassword) => {
     try {
         const userAccount = await userModel.findOne({ email: email });

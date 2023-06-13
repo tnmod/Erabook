@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, ToastAndroid, View } from 'react-native'
 import React from 'react'
 import { Popins } from '../../components/popins'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -7,6 +7,7 @@ import { CheckBox } from '@rneui/themed'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import axios from 'axios'
 
 const SignIn: React.FC = () => {
     
@@ -14,16 +15,47 @@ const SignIn: React.FC = () => {
     const [checked, setChecked] = React.useState(false);
     const toggleCheckbox = () => setChecked(!checked);
 
+    const [email, setemail] = React.useState('');
+    const [password, setpassword] = React.useState('');
+
+    const login = async () =>{
+        console.log("aaaaaa");
+        if(email.length == 0 || password.length == 0){
+            ToastAndroid.show("Nhập thiếu thông tin", ToastAndroid.SHORT)
+            return;
+        }
+        if(checked === false){
+            ToastAndroid.show("Phải chấp nhận điều khoản của chúng tôi", ToastAndroid.SHORT)
+            return;
+        }
+        try {
+            //đổi link
+            const result = await axios.post('http://192.168.1.101:3000/api/user/login', {email, password});
+            if(result.data.user == false || result.data.user == null){
+                ToastAndroid.show("Email hoặc mật khẩu không đúng", ToastAndroid.SHORT)
+                return;
+            }
+            else{
+                console.log(result.data.user);
+                //navigate vào app
+                navigation.navigate('BottomNavigator', { screen: 'MainNavigator' });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
+    }
+
     return (
         <View style={styles.container}>
             <Text style={[styles.textHero, styles.text, {}]}>Sign In</Text>
             <View style={styles.containerInput}>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} />
+                    <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => {setemail(text);}}/>
                     <Icon name='user' size={18} color={'#637899'} />
                 </View>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} />
+                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} onChangeText={text => setpassword(text)}/>
                     <Icon name='mail' size={18} color={'#637899'} />
                 </View>
             </View>
@@ -47,7 +79,7 @@ const SignIn: React.FC = () => {
                 </View>
             </View>
             <TouchableOpacity onPress={() => {
-                navigation.navigate('BottomNavigator', { screen: 'MainNavigator' });
+                login()
             }} style={[styles.buttonHero, styles.center, styles.sizeContainerNomal,]} >
                 <Text style={[styles.text500, { color: 'white' }]} >Sign Up</Text>
             </TouchableOpacity>
