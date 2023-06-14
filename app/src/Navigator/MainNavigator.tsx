@@ -14,6 +14,7 @@ import LoginNavigator from './LoginNavigator';
 import LoginScreen from '../screens/login/LoginScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import BottomNavigator from './BottomNavigator';
+import SettingNavigator from './SettingNavigator';
 const Stack = createStackNavigator();
 
 
@@ -38,6 +39,7 @@ const MainNagivator: React.FC = () => {
                     cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
                 }} />
             <Stack.Screen name='BottomNavigator' component={BottomNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name='SettingNavigator' component={SettingNavigator} options={{ headerShown: false }}/>
         </Stack.Navigator>
     )
 }

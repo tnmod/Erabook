@@ -1,9 +1,16 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity,Button } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Button } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Popins } from '../../components/popins'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Switch } from '@rneui/themed';
+import { styled } from 'nativewind';
+
+const StyledText = styled(Text);
+const StyledView = styled(View);
+const StyledTouch = styled(TouchableOpacity);
+
+
 
 const Notification: React.FC = () => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -19,7 +26,7 @@ const Notification: React.FC = () => {
                 <View style={{ width: "100%", height: 0.5, backgroundColor: 'grey', opacity: 0.5, marginVertical: 12 }}></View>
                 <View style={[{ marginTop: 12 }]}>
                     <TouchableOpacity style={[styles.container1]}>
-                        <Text style={[styles.text3]}>Remember me</Text>
+                        <Text  style={[styles.text3]}>Remember me</Text>
                         <View style={styles.container3}>
                             <Switch
                                 trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -83,9 +90,9 @@ const Notification: React.FC = () => {
                         <Icon size={16} name='right' color={'#192e51'} />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                    <View style={[styles.text810]}>
-                        <Text >Change Password</Text>
-                    </View>
+                        <View style={[styles.text810]}>
+                            <Text >Change Password</Text>
+                        </View>
                     </TouchableOpacity>
 
                 </View>

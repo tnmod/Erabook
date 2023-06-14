@@ -64,7 +64,7 @@ const TabBottomBarCustom = ({ state, descriptors, navigation }: { state: any, de
 
         const widthAnimationStyle = useAnimatedStyle(() => {
           return {
-            flex: withTiming(widthAnimated.value.flex, { duration: 1000 }),
+            flex: withTiming(widthAnimated.value.flex, { duration: 0}),
           };
         });
 

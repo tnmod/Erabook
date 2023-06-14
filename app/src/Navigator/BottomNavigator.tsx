@@ -5,6 +5,7 @@ import HomeScreen from '../screens/home/HomeScreen';
 import TabBottomBarCustom from '../customs/TabBottomBarCustom';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import HomeHeader from '../screens/home/HomeHeader';
+import Account from '../screens/Account/Account';
 
 
 const Tab = createBottomTabNavigator();
@@ -19,7 +20,7 @@ const BottomNavigator: React.FC = () => {
       < Tab.Screen name="Search" component={HomeScreen} />
       <Tab.Screen name="Create" component={HomeScreen} />
       <Tab.Screen name="Feeds" component={HomeScreen} />
-      <Tab.Screen name="Profile" component={HomeScreen} />
+      <Tab.Screen name="Profile" component={Account} options={{ headerShown: false }} />
     </Tab.Navigator>
   )
 }

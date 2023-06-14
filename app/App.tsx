@@ -29,6 +29,8 @@ import DetailScreen from './src/screens/detail/DetailScreen';
 import Notification from './src/screens/setting/Notification';
 import Preferences from './src/screens/setting/Preferences';
 import Security from './src/screens/setting/Security';
+import { styled } from 'nativewind';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
@@ -41,7 +43,9 @@ type Model = {
   name: String;
   age: Number;
 }
-
+const StyledText = styled(Text);
+const StyledView = styled(View);
+const StyledTouch = styled(TouchableOpacity)
 
 const StatusBarIOS = () => {
   return (
@@ -68,9 +72,9 @@ const App: React.FC<Model> = () => {
         <SafeAreaView style={{ flex: 1 }}>
           <StatusBarIOS />
           <StatusBar hidden={true} />
-          {/* <MainNagivator /> */}
+          <MainNagivator />
           {/* <EbookItem /> */}
-          <Security/>
+          {/* <Security/> */}
         </SafeAreaView>
       </NavigationContainer>
     </Provider>

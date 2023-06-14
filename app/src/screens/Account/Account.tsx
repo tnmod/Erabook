@@ -2,11 +2,12 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, Pressable 
 import React, { useState } from 'react'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Switch } from 'react-native-switch';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 
 
-const Account = () => {
-
+const Account = ({ navigation }: { navigation: any }) => {
   // user tạm
   const [user, setuser] = useState({
     name: "Dick",
@@ -16,7 +17,7 @@ const Account = () => {
   const [language, setlanguage] = useState("English (US)")
   const [darkmode, setdarkmode] = useState(false);
 
-  const changeMode = () =>{
+  const changeMode = () => {
     setdarkmode(!darkmode);
   }
 
@@ -25,14 +26,14 @@ const Account = () => {
       <View style={styles.section}>
         <View style={[styles.line, { paddingVertical: 0 }]}>
           <View style={styles.line_left}>
-            <Image style={[styles.image, { marginRight: 10 }]} source={require('../../assets/icon/main/main-icon.png')}></Image>
+            <Image style={[styles.image, { marginRight: 10, width: 32, height: 32 }]} source={require('../../assets/icon/main/main-icon.png')}></Image>
             <Text style={styles.big_text}>Account</Text>
           </View>
           <Icon name='ellipsis1' size={24} color={'#212121'} />
         </View>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <Image style={[styles.image, { marginRight: 20 }]} source={{ uri: user.avatar }}></Image>
+            <Image style={[styles.image, { marginRight: 20, width: 48, height: 48 }]} source={{ uri: user.avatar }}></Image>
             <View>
               <Text style={styles.big_text}>{user.name}</Text>
               <Text style={styles.small_text}>{user.email}</Text>
@@ -42,9 +43,9 @@ const Account = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.section}>
-        <TouchableOpacity style={styles.line}>
+        <TouchableOpacity style={styles.line} onPress={() => { navigation.navigate('SettingNavigator' as never) }}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#edf9f1', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={styles.containerImage}>
               <Image style={styles.image} source={require('../../assets/icon/Finance/credit-card.png')}></Image>
             </View>
             <View>
@@ -57,7 +58,7 @@ const Account = () => {
       <View style={styles.section}>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#eef4ff', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#eef4ff' }]}>
               <Image style={styles.image} source={require('../../assets/icon/System/user.png')}></Image>
             </View>
             <View>
@@ -68,7 +69,7 @@ const Account = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#fff2f3', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#fff2f3' }]}>
               <Image style={styles.image} source={require('../../assets/icon/System/bell-2.png')}></Image>
             </View>
             <View>
@@ -79,7 +80,7 @@ const Account = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#f3f1ff', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#f3f1ff' }]}>
               <Image style={styles.image} source={require('../../assets/icon/System/settings-2.png')}></Image>
             </View>
             <View>
@@ -90,7 +91,7 @@ const Account = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#edf9f1', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#edf9f1' }]}>
               <Image style={styles.image} source={require('../../assets/icon/Outside/shield.png')}></Image>
             </View>
             <View>
@@ -101,7 +102,7 @@ const Account = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#fff7eb', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#fff7eb' }]}>
               <Image style={styles.image} source={require('../../assets/icon/Outside/language.png')}></Image>
             </View>
             <View>
@@ -115,7 +116,7 @@ const Account = () => {
         </TouchableOpacity>
         <Pressable onPress={changeMode} style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#eef4ff', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#eef4ff' }]}>
               <Image style={styles.image} source={require('../../assets/icon/Outside/dark.png')}></Image>
             </View>
             <View>
@@ -129,11 +130,16 @@ const Account = () => {
               disabled={false}
               circleSize={30}
               barHeight={30}
-              circleBorderWidth={3}
-              backgroundActive={'green'}
-              backgroundInactive={'gray'}
-              circleActiveColor={'#30a566'}
-              circleInActiveColor={'#000000'}
+              circleBorderWidth={2}
+              //inactive
+              circleInActiveColor={'#495057'}
+              circleBorderInactiveColor={'#dee2e6'}
+              backgroundInactive={'#dee2e6'}
+              //active
+              circleActiveColor={'#495057'}
+              circleBorderActiveColor={'#adb5bd'}
+              backgroundActive={'#adb5bd'}
+
               changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
               innerCircleStyle={{ alignItems: "center", justifyContent: "center" }} // style for inner animated circle for what you (may) be rendering inside the circle
               outerCircleStyle={{}} // style for outer animated circle
@@ -144,14 +150,14 @@ const Account = () => {
               switchWidthMultiplier={2} // multiplied by the `circleSize` prop to calculate total width of the Switch
               switchBorderRadius={30} // Sets the border Radius of the switch slider. If unset, it remains the circleSize.
             />
-            <Icon style={{marginLeft: 15}} name='right' size={24} color={'#212121'} />
+
           </View>
         </Pressable>
       </View>
       <View style={[styles.section, { borderBottomWidth: 0 }]}>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#edf9f1', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#edf9f1' }]}>
               <Image style={styles.image} source={require('../../assets/icon/System/file.png')}></Image>
             </View>
             <View>
@@ -162,7 +168,7 @@ const Account = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#fff7eb', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#fff7eb' }]}>
               <Image style={styles.image} source={require('../../assets/icon/System/circle-information.png')}></Image>
             </View>
             <View>
@@ -173,7 +179,7 @@ const Account = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
-            <View style={{ borderRadius: 10000, backgroundColor: '#fff2f3', width: 62, height: 62, justifyContent: 'center', alignItems: 'center', marginRight: 20 }}>
+            <View style={[styles.containerImage, { backgroundColor: '#fff2f3' }]}>
               <Image style={styles.image} source={require('../../assets/icon/Outside/logout.png')}></Image>
             </View>
             <View>
@@ -218,7 +224,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Urbanist',
     fontStyle: 'normal',
     fontWeight: '700',
-    fontSize: 20,
+    fontSize: 17,
     color: "#212121",
     marginVertical: 5
   },
@@ -226,14 +232,22 @@ const styles = StyleSheet.create({
     fontFamily: 'Urbanist',
     fontStyle: 'normal',
     fontWeight: '400',
-    fontSize: 16,
+    fontSize: 14,
     color: "#212121",
     marginVertical: 5,
-
   },
   image: {
-    width: 62,
-    height: 62,
+    width: 24,
+    height: 24,
     borderRadius: 31
+  },
+  containerImage: {
+    borderRadius: 10000,
+    backgroundColor: '#edf9f1',
+    width: 48,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20
   }
 })
