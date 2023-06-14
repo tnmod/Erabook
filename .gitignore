@@ -64,3 +64,4 @@ server/server/
 server/server/connectDB.js
 server/.env
 server/config.js
+app/network.config.js

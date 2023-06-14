@@ -8,9 +8,10 @@ import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import axios from 'axios'
+import { IPADDRESS } from '../../../network.config'
 
 const SignIn: React.FC = () => {
-    
+
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [checked, setChecked] = React.useState(false);
     const toggleCheckbox = () => setChecked(!checked);
@@ -18,24 +19,24 @@ const SignIn: React.FC = () => {
     const [email, setemail] = React.useState('');
     const [password, setpassword] = React.useState('');
 
-    const login = async () =>{
+    const login = async () => {
         console.log("aaaaaa");
-        if(email.length == 0 || password.length == 0){
+        if (email.length == 0 || password.length == 0) {
             ToastAndroid.show("Nhập thiếu thông tin", ToastAndroid.SHORT)
             return;
         }
-        if(checked === false){
+        if (checked === false) {
             ToastAndroid.show("Phải chấp nhận điều khoản của chúng tôi", ToastAndroid.SHORT)
             return;
         }
         try {
             //đổi link
-            const result = await axios.post('http://192.168.1.101:3000/api/user/login', {email, password});
-            if(result.data.user == false || result.data.user == null){
+            const result = await axios.post(IPADDRESS + '/api/user/login', { email, password });
+            if (result.data.user == false || result.data.user == null) {
                 ToastAndroid.show("Email hoặc mật khẩu không đúng", ToastAndroid.SHORT)
                 return;
             }
-            else{
+            else {
                 console.log(result.data.user);
                 //navigate vào app
                 navigation.navigate('BottomNavigator', { screen: 'MainNavigator' });
@@ -43,7 +44,7 @@ const SignIn: React.FC = () => {
         } catch (error) {
             console.log(error);
         }
-        
+
     }
 
     return (
@@ -51,11 +52,11 @@ const SignIn: React.FC = () => {
             <Text style={[styles.textHero, styles.text, {}]}>Sign In</Text>
             <View style={styles.containerInput}>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => {setemail(text);}}/>
+                    <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => { setemail(text); }} />
                     <Icon name='user' size={18} color={'#637899'} />
                 </View>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} onChangeText={text => setpassword(text)}/>
+                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} onChangeText={text => setpassword(text)} />
                     <Icon name='mail' size={18} color={'#637899'} />
                 </View>
             </View>
