@@ -53,14 +53,14 @@ const SignUp: React.FC = () => {
 
         try {
             //đổi link
-            const result = await axios.post(IPADDRESS + '/api/user/register', { email, password, username });
-            if (result.data.user == false || result.data.user == null) {
+            const result = await axios.post(IPADDRESS + '/api/user/find', { email});
+            if (result.data.user == true) {
                 console.log("Email đã được đăng ký");
                 ToastAndroid.show("Email đã được đăng ký", ToastAndroid.SHORT)
                 return;
             }
             else {
-                console.log(result.data.user);
+                const result2 = await axios.post(IPADDRESS + '/api/user/email', { email , password , username, link:IPADDRESS});
                 navigation.navigate('SignIn' as never);
             }
         } catch (error) {
