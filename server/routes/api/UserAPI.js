@@ -62,4 +62,22 @@ router.post('/email', async (req, res, next) => {
     }
 })
 
+router.post('/changeinfo', async (req, res, next) => {const { id, username } = req.body;
+    try{
+        const user = await userController.changeinfo(id, username);
+        res.status(200).json({ "user": user });
+    } catch (error) {
+        res.status(400).json({ "error": error });
+    }
+})
+router.post('/changepassword', async (req, res, next) => {
+    try {
+        const { id, email, newpassword, oldpassword } = req.body;
+        const user = await userController.changepassword(id, email, newpassword, oldpassword);
+        res.status(200).json({ "user": user });
+    } catch (error) {
+        res.status(400).json({ "error": error });
+    }
+})
+
 module.exports = router;

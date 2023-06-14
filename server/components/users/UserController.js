@@ -1,6 +1,13 @@
 const mailer = require('nodemailer');
 const userService = require('./UserService');
 
+const changeinfo = async (id, username) => {
+    return await userService.changeinfo(id, username);
+}
+const changepassword = async (userId, email, newpassword, oldpassword) => {
+    return await userService.changepassword(userId, email, newpassword, oldpassword);
+}
+
 const transporter = mailer.createTransport({
     pool: true,
     host: 'smtp.gmail.com',
@@ -46,11 +53,8 @@ const register = async (email, password, username) => {
     return await userService.register(email, password, username);
 }
 
-const changepassword = async (email, newpassword, changepassword) => {
-    return await userService.changepassword(email, newpassword, changepassword);
-}
 const resetpassword = async (email, securityQuestion, securityAnswer, newpassword) => {
     return await userService.resetpassword(email, securityQuestion, securityAnswer, newpassword);
 }
-module.exports = { login, register, getAll, findEmail, changepassword, resetpassword, sendEmail }
+module.exports = { login, register, getAll, findEmail, changepassword, resetpassword, sendEmail, changeinfo }
 
