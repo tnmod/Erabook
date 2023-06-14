@@ -15,11 +15,11 @@ import LoginScreen from '../screens/login/LoginScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import BottomNavigator from './BottomNavigator';
 import SettingNavigator from './SettingNavigator';
+import { RootState } from '../redux/rootState';
 const Stack = createStackNavigator();
 
 
-const MainNagivator: React.FC = () => {
-
+const LoginRoute = () => {
     return (
         <Stack.Navigator initialRouteName='LoginScreen'>
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{
@@ -38,9 +38,28 @@ const MainNagivator: React.FC = () => {
                     },
                     cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
                 }} />
-            <Stack.Screen name='BottomNavigator' component={BottomNavigator} options={{ headerShown: false }} />
-            <Stack.Screen name='SettingNavigator' component={SettingNavigator} options={{ headerShown: false }}/>
         </Stack.Navigator>
+    )
+}
+const HomeRoute = () => {
+    return (
+        <Stack.Navigator initialRouteName='BottomNavigator'>
+            <Stack.Screen name='BottomNavigator' component={BottomNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name='SettingNavigator' component={SettingNavigator} options={{ headerShown: false }} />
+        </Stack.Navigator>
+    )
+}
+const MainNagivator: React.FC = () => {
+
+    const user = useSelector((state: RootState) => state.user.currentUser);
+    return (
+        <View style={{ flex: 1 }}>
+            {
+                user ? (<HomeRoute />) : (<LoginRoute />)
+            }
+        </View>
+
+
     )
 }
 

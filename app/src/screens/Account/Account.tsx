@@ -4,16 +4,21 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import { Switch } from 'react-native-switch';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/rootState';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { LogOut } from 'react-native-feather';
+import { loginSuccess, logoutSuccess } from '../../redux/features/UserSilce';
 
 
+export type RootStackParamList = {
+  SettingNavigator: { id: number } | undefined;
+};
 
-const Account = ({ navigation }: { navigation: any }) => {
-  // user tạm
-  const [user, setuser] = useState({
-    name: "Dick",
-    email: "HereisDuck@gmail.com",
-    avatar: "https://external-preview.redd.it/AJLFtxgTlcGvkeP77B-5IE38PGyMt98MoJl6cWPBApE.jpg?auto=webp&s=397f1b5be810bc3f322a4087018e39cc85902a03"
-  })
+const Account = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const user = useSelector((state: RootState) => state.user.currentUser);
+  const dispatch = useDispatch();
   const [language, setlanguage] = useState("English (US)")
   const [darkmode, setdarkmode] = useState(false);
 
@@ -24,22 +29,24 @@ const Account = ({ navigation }: { navigation: any }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
-        <View style={[styles.line, { paddingVertical: 0 }]}>
+        <View style={[styles.line, { paddingVertical: 0, marginBottom: 10 }]}>
           <View style={styles.line_left}>
             <Image style={[styles.image, { marginRight: 10, width: 32, height: 32 }]} source={require('../../assets/icon/main/main-icon.png')}></Image>
             <Text style={styles.big_text}>Account</Text>
           </View>
-          <Icon name='ellipsis1' size={24} color={'#212121'} />
+          <TouchableOpacity style={{ borderWidth: 1, borderColor: 'black', borderRadius: 1000, padding: 2 }}>
+            <Icon name='ellipsis1' size={16} color={'#212121'} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.line}>
+        <TouchableOpacity style={styles.line} onPress={() => { navigation.navigate('SettingNavigator', { screen: 'PersonalInfo' } as never) }}>
           <View style={styles.line_left}>
-            <Image style={[styles.image, { marginRight: 20, width: 48, height: 48 }]} source={{ uri: user.avatar }}></Image>
+            <Image style={[styles.image, { marginRight: 20, width: 48, height: 48, padding: 0 }]} source={require('../../assets/images/avatardefault-dark.png')}></Image>
             <View>
-              <Text style={styles.big_text}>{user.name}</Text>
+              <Text style={styles.big_text}>{user.username}</Text>
               <Text style={styles.small_text}>{user.email}</Text>
             </View>
           </View>
-          <Icon name='edit' size={24} color={'#212121'} />
+          <Icon name='edit' size={16} color={'#212121'} />
         </TouchableOpacity>
       </View>
       <View style={styles.section}>
@@ -52,7 +59,7 @@ const Account = ({ navigation }: { navigation: any }) => {
               <Text style={styles.big_text}>Payment Methods</Text>
             </View>
           </View>
-          <Icon name='right' size={24} color={'#212121'} />
+          <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
       </View>
       <View style={styles.section}>
@@ -65,7 +72,7 @@ const Account = ({ navigation }: { navigation: any }) => {
               <Text style={styles.big_text}>Personal Info</Text>
             </View>
           </View>
-          <Icon name='right' size={24} color={'#212121'} />
+          <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
@@ -76,7 +83,7 @@ const Account = ({ navigation }: { navigation: any }) => {
               <Text style={styles.big_text}>Notification</Text>
             </View>
           </View>
-          <Icon name='right' size={24} color={'#212121'} />
+          <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
@@ -87,9 +94,9 @@ const Account = ({ navigation }: { navigation: any }) => {
               <Text style={styles.big_text}>Preferences</Text>
             </View>
           </View>
-          <Icon name='right' size={24} color={'#212121'} />
+          <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.line}>
+        <TouchableOpacity onPress={() => { navigation.navigate('SettingNavigator', { screen: 'ChangePassword' } as never) }} style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#edf9f1' }]}>
               <Image style={styles.image} source={require('../../assets/icon/Outside/shield.png')}></Image>
@@ -98,7 +105,7 @@ const Account = ({ navigation }: { navigation: any }) => {
               <Text style={styles.big_text}>Security</Text>
             </View>
           </View>
-          <Icon name='right' size={24} color={'#212121'} />
+          <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
@@ -111,7 +118,7 @@ const Account = ({ navigation }: { navigation: any }) => {
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={[styles.big_text, { fontWeight: '400', marginRight: 15 }]}>{language}</Text>
-            <Icon name='right' size={24} color={'#212121'} />
+            <Icon name='right' size={16} color={'#212121'} />
           </View>
         </TouchableOpacity>
         <Pressable onPress={changeMode} style={styles.line}>
@@ -164,7 +171,7 @@ const Account = ({ navigation }: { navigation: any }) => {
               <Text style={styles.big_text}>Help Center</Text>
             </View>
           </View>
-          <Icon name='right' size={24} color={'#212121'} />
+          <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
@@ -175,9 +182,9 @@ const Account = ({ navigation }: { navigation: any }) => {
               <Text style={styles.big_text}>About Erabook</Text>
             </View>
           </View>
-          <Icon name='right' size={24} color={'#212121'} />
+          <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.line}>
+        <TouchableOpacity style={styles.line} onPress={() => { dispatch(logoutSuccess()) }}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#fff2f3' }]}>
               <Image style={styles.image} source={require('../../assets/icon/Outside/logout.png')}></Image>
@@ -237,8 +244,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   image: {
-    width: 24,
-    height: 24,
+    width: 28,
+    height: 28,
     borderRadius: 31
   },
   containerImage: {

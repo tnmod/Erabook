@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ToastAndroid, View } from 'react-native'
+import { Image, StyleSheet, Text, ToastAndroid, View } from 'react-native'
 import React from 'react'
 import { Popins } from '../../components/popins'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -9,18 +9,21 @@ import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import axios from 'axios'
 import { IPADDRESS } from '../../../network.config'
+import LoadingDialog from '../../components/dialog/LoadingDialog'
+import { useDispatch } from 'react-redux'
+import { loginFailure, loginStart, loginSuccess } from '../../redux/features/UserSilce'
 
 const SignIn: React.FC = () => {
-
+    const dispatch = useDispatch();
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
     const [checked, setChecked] = React.useState(false);
     const toggleCheckbox = () => setChecked(!checked);
+    const [isUnlock, setUnlock] = React.useState(false);
 
     const [email, setemail] = React.useState('');
     const [password, setpassword] = React.useState('');
 
     const login = async () => {
-        console.log("aaaaaa");
         if (email.length == 0 || password.length == 0) {
             ToastAndroid.show("Nhập thiếu thông tin", ToastAndroid.SHORT)
             return;
@@ -31,24 +34,29 @@ const SignIn: React.FC = () => {
         }
         try {
             //đổi link
+            dispatch(loginStart());
             const result = await axios.post(IPADDRESS + '/api/user/login', { email, password });
             if (result.data.user == false || result.data.user == null) {
-                ToastAndroid.show("Email hoặc mật khẩu không đúng", ToastAndroid.SHORT)
+                ToastAndroid.show("Email hoặc mật khẩu không đúng", ToastAndroid.SHORT);
+                dispatch(loginFailure());
                 return;
             }
             else {
+
                 console.log(result.data.user);
                 //navigate vào app
+                dispatch(loginSuccess(result.data.user));
                 navigation.navigate('BottomNavigator', { screen: 'MainNavigator' });
+
             }
         } catch (error) {
             console.log(error);
         }
-
     }
 
     return (
         <View style={styles.container}>
+            <LoadingDialog />
             <Text style={[styles.textHero, styles.text, {}]}>Sign In</Text>
             <View style={styles.containerInput}>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
@@ -56,8 +64,10 @@ const SignIn: React.FC = () => {
                     <Icon name='user' size={18} color={'#637899'} />
                 </View>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Password' cursorColor={'#637899'} onChangeText={text => setpassword(text)} />
-                    <Icon name='mail' size={18} color={'#637899'} />
+                    <TextInput secureTextEntry={!isUnlock} style={styles.inputField} placeholder='Password' cursorColor={'#637899'} onChangeText={text => setpassword(text)} />
+                    <TouchableOpacity onPress={() => { isUnlock ? setUnlock(false) : setUnlock(true) }}>
+                        <Image style={{ tintColor: '#637899', width: 24, height: 24, }} source={isUnlock ? require('../../assets/icon/System/unlock.png') : require('../../assets/icon/System/lock.png')} />
+                    </TouchableOpacity>
                 </View>
             </View>
 

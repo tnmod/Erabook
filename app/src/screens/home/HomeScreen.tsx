@@ -1,13 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Popins } from '../../components/popins'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/rootState'
+
+
 
 const HomeScreen: React.FC = () => {
+  const user = useSelector((state: RootState) => state.user.currentUser);
 
+  React.useEffect(() => {
 
-  React.useEffect(()=>{
-
-  },[])
+  }, [])
 
   return (
     <View style={[styles.container]}>
