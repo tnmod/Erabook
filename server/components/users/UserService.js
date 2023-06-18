@@ -2,6 +2,7 @@ const userModel = require('./UserModel');
 const bcrypt = require('bcryptjs');
 const salt = bcrypt.genSaltSync(10);
 
+
 const getAll = async () => {
 
     return await userModel.find();
@@ -45,16 +46,7 @@ const register = async (email, password, username) => {
     } catch (error) {
         return false;
     }
-}
 
-const changeinfo = async (userId, newUsername) => {
-    try {
-        const updatedUser = await userModel.findByIdAndUpdate(userId, { username: newUsername }, { new: true });
-        return updatedUser;
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
 }
 
 // const register = async (email, password, name, age, address, securityquestion, securityanswer, cart) => {
@@ -81,12 +73,12 @@ const changeinfo = async (userId, newUsername) => {
 // }
 
 
-const changepassword = async (id, email, newpassword, oldpassword) => {
+const changepassword = async (email, newpassword, oldpassword) => {
     try {
-        const user = await userModel.findOne({ email: email });
-        if (user && bcrypt.compareSync(oldpassword, user.password)) {
-            let hast = bcrypt.hashSync(newpassword, salt);
-            await userModel.findOneAndUpdate({ email: email }, { password: hast }, { new: true });
+        const userAccount = await userModel.findOne({ email: email });
+        if (userAccount && userAccount.password == oldpassword) {
+            userAccount.password = newpassword;
+            userAccount.save();
             return true;
         }
         return false;
@@ -124,7 +116,6 @@ module.exports = {
     findEmail,
     changepassword,
     resetpassword,
-    changeinfo,
 };
 
 var users = [
