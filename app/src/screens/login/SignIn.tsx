@@ -9,9 +9,10 @@ import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import axios from 'axios'
 import { IPADDRESS } from '../../../network.config'
-import LoadingDialog from '../../components/dialog/LoadingDialog'
+import LoadingRedux from '../../components/dialog/DialogRedux'
 import { useDispatch } from 'react-redux'
-import { loginFailure, loginStart, loginSuccess } from '../../redux/features/UserSilce'
+import { addUserData, removeUserData } from '../../redux/features/UserSilce'
+import { closeDialog, openDialog } from '../../redux/features/DialogSilce'
 
 const SignIn: React.FC = () => {
     const dispatch = useDispatch();
@@ -24,30 +25,28 @@ const SignIn: React.FC = () => {
     const [password, setpassword] = React.useState('');
 
     const login = async () => {
-        if (email.length == 0 || password.length == 0) {
-            ToastAndroid.show("Nhập thiếu thông tin", ToastAndroid.SHORT)
-            return;
-        }
-        if (checked === false) {
-            ToastAndroid.show("Phải chấp nhận điều khoản của chúng tôi", ToastAndroid.SHORT)
-            return;
-        }
+        // if (email.length == 0 || password.length == 0) {
+        //     ToastAndroid.show("Nhập thiếu thông tin", ToastAndroid.SHORT)
+        //     return;
+        // }
+        // if (checked === false) {
+        //     ToastAndroid.show("Phải chấp nhận điều khoản của chúng tôi", ToastAndroid.SHORT)
+        //     return;
+        // }
         try {
-            //đổi link
-            dispatch(loginStart());
+            dispatch(openDialog({ choose: 0 }));
             const result = await axios.post(IPADDRESS + '/api/user/login', { email, password });
             if (result.data.user == false || result.data.user == null) {
                 ToastAndroid.show("Email hoặc mật khẩu không đúng", ToastAndroid.SHORT);
-                dispatch(loginFailure());
+                dispatch(openDialog({ choose: 2, title: 'Failed!', content: 'Incorrect email or password', buttontext: 'Try again' }));
                 return;
             }
             else {
-
+                dispatch(closeDialog());
+                // dispatch(openDialog({ choose: 1, content: 'Success!' }));
                 console.log(result.data.user);
-                //navigate vào app
-                dispatch(loginSuccess(result.data.user));
+                dispatch(addUserData(result.data.user));
                 navigation.navigate('BottomNavigator', { screen: 'MainNavigator' });
-
             }
         } catch (error) {
             console.log(error);
@@ -56,7 +55,7 @@ const SignIn: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <LoadingDialog />
+            <LoadingRedux />
             <Text style={[styles.textHero, styles.text, {}]}>Sign In</Text>
             <View style={styles.containerInput}>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>

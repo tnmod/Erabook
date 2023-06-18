@@ -8,43 +8,48 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootState';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LogOut } from 'react-native-feather';
-import { loginSuccess, logoutSuccess } from '../../redux/features/UserSilce';
+import { addUserData, removeUserData } from '../../redux/features/UserSilce';
+import { styled } from 'nativewind';
 
-
+const TextTw = styled(Text);
+const ViewTw = styled(View);
+const TouchableOpacityTw = styled(TouchableOpacity);
+const ImageTw = styled(Image);
+const ScrollViewTw = styled(ScrollView);
 export type RootStackParamList = {
   SettingNavigator: { id: number } | undefined;
 };
 
 const Account = () => {
+  
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const user = useSelector((state: RootState) => state.user.currentUser);
   const dispatch = useDispatch();
   const [language, setlanguage] = useState("English (US)")
   const [darkmode, setdarkmode] = useState(false);
-
   const changeMode = () => {
     setdarkmode(!darkmode);
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollViewTw className='pb-4' style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.section}>
         <View style={[styles.line, { paddingVertical: 0, marginBottom: 10 }]}>
           <View style={styles.line_left}>
             <Image style={[styles.image, { marginRight: 10, width: 32, height: 32 }]} source={require('../../assets/icon/main/main-icon.png')}></Image>
-            <Text style={styles.big_text}>Account</Text>
+            <TextTw className='text-lg' style={styles.big_text}>Account</TextTw>
           </View>
-          <TouchableOpacity style={{ borderWidth: 1, borderColor: 'black', borderRadius: 1000, padding: 2 }}>
+          {/* <TouchableOpacity style={{ borderWidth: 1, borderColor: 'black', borderRadius: 1000, padding: 2 }}>
             <Icon name='ellipsis1' size={16} color={'#212121'} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <TouchableOpacity style={styles.line} onPress={() => { navigation.navigate('SettingNavigator', { screen: 'PersonalInfo' } as never) }}>
           <View style={styles.line_left}>
             <Image style={[styles.image, { marginRight: 20, width: 48, height: 48, padding: 0 }]} source={require('../../assets/images/avatardefault-dark.png')}></Image>
-            <View>
-              <Text style={styles.big_text}>{user.username}</Text>
-              <Text style={styles.small_text}>{user.email}</Text>
-            </View>
+            <ViewTw className='justify-center'>
+              <TextTw className='text-lg p-0 m-0' style={[styles.big_text]}>{user.username}</TextTw>
+              <TextTw className='text-base p-0 m-0' style={styles.small_text}>{user.email}</TextTw>
+            </ViewTw>
           </View>
           <Icon name='edit' size={16} color={'#212121'} />
         </TouchableOpacity>
@@ -52,11 +57,11 @@ const Account = () => {
       <View style={styles.section}>
         <TouchableOpacity style={styles.line} onPress={() => { navigation.navigate('SettingNavigator' as never) }}>
           <View style={styles.line_left}>
-            <View style={styles.containerImage}>
-              <Image style={styles.image} source={require('../../assets/icon/Finance/credit-card.png')}></Image>
+            <View style={[styles.containerImage, { backgroundColor: '#edf9f1' }]}>
+              <Image style={[styles.image, {tintColor:'#52ddad'}]} source={require('../../assets/icon-solid/Finance/credit-card.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Payment Methods</Text>
+              <TextTw className='text-base' style={styles.big_text}>Payment Methods</TextTw>
             </View>
           </View>
           <Icon name='right' size={16} color={'#212121'} />
@@ -66,10 +71,10 @@ const Account = () => {
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#eef4ff' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/System/user.png')}></Image>
+              <Image style={[styles.image, {tintColor:'#518afe'}]} source={require('../../assets/icon-solid/System/user.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Personal Info</Text>
+              <TextTw className='text-base' style={styles.big_text}>Personal Info</TextTw>
             </View>
           </View>
           <Icon name='right' size={16} color={'#212121'} />
@@ -77,10 +82,10 @@ const Account = () => {
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#fff2f3' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/System/bell-2.png')}></Image>
+              <Image style={[styles.image, {tintColor:'#ff6e77'}]} source={require('../../assets/icon-solid/System/bell-2.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Notification</Text>
+              <TextTw className='text-base' style={styles.big_text}>Notification</TextTw>
             </View>
           </View>
           <Icon name='right' size={16} color={'#212121'} />
@@ -88,10 +93,10 @@ const Account = () => {
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#f3f1ff' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/System/settings-2.png')}></Image>
+              <Image style={[styles.image, {tintColor:'#7355ff'}]} source={require('../../assets/icon-solid/System/settings-2.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Preferences</Text>
+              <TextTw className='text-base' style={styles.big_text}>Preferences</TextTw>
             </View>
           </View>
           <Icon name='right' size={16} color={'#212121'} />
@@ -99,10 +104,10 @@ const Account = () => {
         <TouchableOpacity onPress={() => { navigation.navigate('SettingNavigator', { screen: 'ChangePassword' } as never) }} style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#edf9f1' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/Outside/shield.png')}></Image>
+              <Image style={[styles.image, {tintColor:'#42daa5'}]} source={require('../../assets/icon-solid/System/lock.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Security</Text>
+              <TextTw className='text-base' style={styles.big_text}>Security</TextTw>
             </View>
           </View>
           <Icon name='right' size={16} color={'#212121'} />
@@ -110,10 +115,10 @@ const Account = () => {
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#fff7eb' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/Outside/language.png')}></Image>
+              <Image style={[styles.image, {tintColor:'#fba526'}]} source={require('../../assets/icon-solid/System/global.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Language</Text>
+              <TextTw className='text-base' style={styles.big_text}>Language</TextTw>
             </View>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -123,11 +128,11 @@ const Account = () => {
         </TouchableOpacity>
         <Pressable onPress={changeMode} style={styles.line}>
           <View style={styles.line_left}>
-            <View style={[styles.containerImage, { backgroundColor: '#eef4ff' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/Outside/dark.png')}></Image>
+            <View style={[styles.containerImage, { backgroundColor: '#dee2e670' }]}>
+              <Image style={[styles.image, {tintColor:'#495057'}]} source={require('../../assets/icon-solid/Other/moon-1.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Dark mode</Text>
+              <TextTw className='text-base' style={styles.big_text}>Dark mode</TextTw>
             </View>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -165,10 +170,10 @@ const Account = () => {
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#edf9f1' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/System/file.png')}></Image>
+              <Image style={[styles.image, {tintColor:'#52ddad'}]} source={require('../../assets/icon-solid/Business/flag.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>Help Center</Text>
+              <TextTw className='text-base' style={styles.big_text}>Help Center</TextTw>
             </View>
           </View>
           <Icon name='right' size={16} color={'#212121'} />
@@ -176,26 +181,26 @@ const Account = () => {
         <TouchableOpacity style={styles.line}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#fff7eb' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/System/circle-information.png')}></Image>
+              <Image style={[styles.image, {tintColor:'#fb9f19'}]} source={require('../../assets/icon-solid/System/circle-information.png')}></Image>
             </View>
             <View>
-              <Text style={styles.big_text}>About Erabook</Text>
+              <TextTw className='text-base' style={styles.big_text}>About Erabook</TextTw>
             </View>
           </View>
           <Icon name='right' size={16} color={'#212121'} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.line} onPress={() => { dispatch(logoutSuccess()) }}>
+        <TouchableOpacity style={styles.line} onPress={() => { dispatch(removeUserData()) }}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#fff2f3' }]}>
-              <Image style={styles.image} source={require('../../assets/icon/Outside/logout.png')}></Image>
+              <Image style={[styles.image,{tintColor:'#ff7a86'}]} source={require('../../assets/icon-solid/Devices/power.png')}></Image>
             </View>
             <View>
-              <Text style={[styles.big_text, { color: '#ea5050' }]}>Logout</Text>
+              <TextTw className='text-base' style={[styles.big_text, { color: '#f85555' }]}>Logout</TextTw>
             </View>
           </View>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </ScrollViewTw>
   )
 }
 
@@ -231,7 +236,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Urbanist',
     fontStyle: 'normal',
     fontWeight: '700',
-    fontSize: 17,
     color: "#212121",
     marginVertical: 5
   },
@@ -249,8 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 31
   },
   containerImage: {
-    borderRadius: 10000,
-    backgroundColor: '#edf9f1',
+    borderRadius: 10000, 
     width: 48,
     height: 48,
     justifyContent: 'center',

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootState';
 import axios from 'axios';
 import { IPADDRESS } from '../../../network.config';
-import { loginSuccess } from '../../redux/features/UserSilce';
+import { addUserData } from '../../redux/features/UserSilce';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -44,7 +44,7 @@ const ChangePassword: React.FC = () => {
                 ToastAndroid.show("Sai mật khẩu cũ", ToastAndroid.SHORT);
                 return;
             } else {
-                dispatch(loginSuccess(result.data.user));
+                dispatch(addUserData(result.data.user));
                 navigation.goBack();
                 return;
             }

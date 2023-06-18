@@ -1,12 +1,15 @@
 import { Image, ScrollView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from 'nativewind';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootState';
 import axios from 'axios';
 import { IPADDRESS } from '../../../network.config';
-import { loginSuccess } from '../../redux/features/UserSilce';
+import { addUserData } from '../../redux/features/UserSilce';
 import { useNavigation } from '@react-navigation/native';
+import { DialogLoading } from '@rneui/base/dist/Dialog/Dialog.Loading';
+import { closeDialog, openDialog, resetAction } from '../../redux/features/DialogSilce';
+import LoadingRedux from '../../components/dialog/DialogRedux';
 
 
 const TextTw = styled(Text);
@@ -32,18 +35,21 @@ const PersonalInfo: React.FC = () => {
         } else {
             const result = await axios.post(IPADDRESS + '/api/user/changeinfo', { id: user._id, username: newName });
             if (result.data.user == false || result.data.user == null) {
+                dispatch(openDialog({ choose: 2, title: "Oops!", content: "something went wrong", buttontext: "Try again", actionType:1 }))
                 ToastAndroid.show("Failed", ToastAndroid.SHORT);
                 return;
             } else {
-                dispatch(loginSuccess(result.data.user));
-                navigation.goBack();
+                dispatch(openDialog({ choose: 1, title: "Success", content: "Successfully save data!", buttontext: "Go back", actionType:1 }))
+                dispatch(addUserData(result.data.user));
+                
                 return;
             }
         }
     }
-
+    
     return (
         <ViewTw className='flex-1 bg-white items-center'>
+            <LoadingRedux />
             <ViewTw className='w-screen my-4 justify-center items-center'>
                 <Image style={[{ marginRight: 20, width: 96, height: 96, padding: 0 }]} source={require('../../assets/images/avatardefault-dark.png')}></Image>
             </ViewTw>

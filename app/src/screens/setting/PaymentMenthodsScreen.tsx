@@ -49,8 +49,8 @@ const PaymentMenthodsScreen: React.FC = () => {
                 DATA.map((item, index) => (
                     <ViewTw className=' ' key={item.id}>
                         <ViewTw className='flex-row items-center'>
-                            <ImageTw className='grow-0 w-14 h-14 rounded-full mr-4' source={{ uri: item.uri }} />
-                            <TextTw className='grow text-black font-bold text-lg' >{item.name}</TextTw>
+                            <ImageTw className='grow-0 w-12 h-12 rounded-full mr-4' source={{ uri: item.uri }} />
+                            <TextTw className='grow text-black font-bold text-base' >{item.name}</TextTw>
                             <TouchableOpacityTw>
                                 <TextTw className='grow-0 text-orange-400 font-bold text-base'>Connected</TextTw>
                             </TouchableOpacityTw>
