@@ -4,4 +4,7 @@ interface UserType {
     username: string;
     password: string;
 }
-export type { UserType };
+interface UserState {
+    currentUser: UserType;
+}
+export type { UserState, UserType };

@@ -14,7 +14,7 @@ const TouchableOpacityTw = styled(TouchableOpacity);
 const ImageTw = styled(Image);
 const ScrollviewTw = styled(ScrollView);
 const DialogTw = styled(Dialog);
-const LoadingRedux = () => {
+const DialogRedux = () => {
     const dispatch = useDispatch();
     const choose = useSelector((state) => state.dialog.choose);
     const content = useSelector((state) => state.dialog.content);
@@ -114,6 +114,6 @@ const FailedDialog = ({ content, title, buttontext }) => {
     )
 }
 
-export default LoadingRedux
+export default DialogRedux
 
 const styles = StyleSheet.create({})

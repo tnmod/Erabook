@@ -1,8 +1,8 @@
 interface DialogType {
-    choose:Number, 
-    title:String, 
-    content:String, 
-    buttontext:String, 
-    actionType:Number
+    choose: number,
+    title: string,
+    content: string,
+    buttontext: string,
+    actionType: number
 }
 export type { DialogType };

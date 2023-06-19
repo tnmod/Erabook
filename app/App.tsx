@@ -68,15 +68,13 @@ const App: React.FC<Model> = () => {
 
   return (
     <Provider store={store} >
-      <NavigationContainer>
-        <SafeAreaView style={{ flex: 1 }}>
-          <StatusBarIOS />
-          <StatusBar hidden={true} />
+      <View style={{ flex: 1 }}>
+        <StatusBarIOS />
+        <StatusBar hidden={true} />
+        <NavigationContainer>
           <MainNagivator />
-          {/* <EbookItem /> */}
-          {/* <Security/> */}
-        </SafeAreaView>
-      </NavigationContainer>
+        </NavigationContainer>
+      </View>
     </Provider>
   );
 }

@@ -6,8 +6,6 @@ import { increment, decrement, selectCount } from '../redux/features/CounterSilc
 
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import SignIn from '../screens/login/SignIn';
-import SignUp from '../screens/login/SignUp';
 import Terms_Agreement from '../screens/login/Terms_Agreement';
 import Icon from 'react-native-vector-icons/AntDesign'
 import LoginNavigator from './LoginNavigator';
@@ -43,15 +41,15 @@ const LoginRoute = () => {
 }
 const HomeRoute = () => {
     return (
-        <Stack.Navigator initialRouteName='BottomNavigator'>
+        <Stack.Navigator initialRouteName='BottomNavigator' screenOptions={{}}>
             <Stack.Screen name='BottomNavigator' component={BottomNavigator} options={{ headerShown: false }} />
             <Stack.Screen name='SettingNavigator' component={SettingNavigator} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }
-const MainNagivator: React.FC = () => {
+const MainNagivator = () => {
 
-    const user = useSelector((state: RootState) => state.user.currentUser);
+    const user = useSelector((state) => state.user.currentUser);
     return (
         <View style={{ flex: 1 }}>
             {

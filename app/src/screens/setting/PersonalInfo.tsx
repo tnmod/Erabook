@@ -9,7 +9,7 @@ import { addUserData } from '../../redux/features/UserSilce';
 import { useNavigation } from '@react-navigation/native';
 import { DialogLoading } from '@rneui/base/dist/Dialog/Dialog.Loading';
 import { closeDialog, openDialog, resetAction } from '../../redux/features/DialogSilce';
-import LoadingRedux from '../../components/dialog/DialogRedux';
+import DialogRedux from '../../components/dialog/DialogRedux';
 
 
 const TextTw = styled(Text);
@@ -49,7 +49,7 @@ const PersonalInfo: React.FC = () => {
     
     return (
         <ViewTw className='flex-1 bg-white items-center'>
-            <LoadingRedux />
+            <DialogRedux />
             <ViewTw className='w-screen my-4 justify-center items-center'>
                 <Image style={[{ marginRight: 20, width: 96, height: 96, padding: 0 }]} source={require('../../assets/images/avatardefault-dark.png')}></Image>
             </ViewTw>

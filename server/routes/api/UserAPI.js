@@ -3,9 +3,9 @@ var router = express.Router();
 const userController = require('../../components/users/UserController');
 const AUTH = require('../../middle/Authen');
 
-router.post('/register/:email/:password/:username', async (req, res, next) => {
+router.post('/register', async (req, res, next) => {
     try {
-        const { email, password, username } = req.params;
+        const { email, password, username } = req.body;
         const user = await userController.register(email, password, username);
         res.status(200).json({ "user": user });
     } catch (error) {
@@ -42,28 +42,73 @@ router.post('/find', async (req, res, next) => {
     }
 })
 
+function generateRandomNumbers() {
+    const numbers = [];
+
+    for (let i = 0; i < 6; i++) {
+        const randomNumber = Math.floor(Math.random() * 9) + 1;
+        numbers.push(randomNumber);
+    }
+    return numbers;
+}
+
+let randomCode = "";
+
 router.post('/email', async (req, res, next) => {
     try {
-        const { email, password, username, link } = req.body;
+        const random = generateRandomNumbers();
+        const { email } = req.body;
+        randomCode = random.join(",") + ":" + email;
+        // let numberFormat = "";
+        // for (let index = 0; index < random.length; index++) {
+        //     numberFormat = numberFormat.concat(" : ", random[index].toString());
+        // }
         let subject = "Xác nhận đăng ký"
-        let content = `<h1>Mail xác nhận</h1>
-        <p>Bạn đang đăng ký tài khoản Erabook</p>
-        <p>Bấm vào nút bên dưới để xác nhận</p>
-        
-        <form action="${link}/api/user/register/${email}/${password}/${username}" method="post">
-            <button type="submit">Đăng ký</button>
-        </form>
-        `;
+        let content = `
+        <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
+          <div style="background-color: #fff; border-radius: 10px; padding: 20px;">
+            <h1 style="font-size: 24px; color: #333;">Mail xác nhận</h1>
+            <p style="font-size: 16px; color: #666;">Bạn đang đăng ký tài khoản Erabook</p>
+            <p style="font-size: 16px; color: #666;">Đừng chia sẻ mã này cho bất kì ai</p>
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+              <div style="display: flex; justify-content: center; align-items: center; border: 1px solid #ccc; border-radius: 10px; padding: 10px; background-color: #f9f9f9;">
+                ${random.map(number => `
+                  <div style="font-size: 32px; color: #333; margin: 0 5px;">${number}</div>
+                `).join('')}
+              </div>
+            </div>
+            <p style="font-size: 16px; color: #666;">Hãy sử dụng mã trên để hoàn thành quá trình đăng ký.</p>
+          </div>
+        </div>
+      `;
         const result = await userController.sendEmail(email, subject, content);
         return res.status(200).json({ result });
     } catch (error) {
         console.log('send mail error: ', error);
         return res.status(500).json({ result: false });
     }
+});
+
+router.post('/veriCode', async (req, res, next) => {
+    try {
+        const [array, emailOTP] = randomCode.split(":");
+        const codeOTP = array.split(",").map(Number);
+        const { code, email } = req.body;
+        if (emailOTP === email) {
+            if (JSON.stringify(code) == JSON.stringify(codeOTP)) {
+                return res.status(200).json(true);
+            }
+            return res.status(200).json(false);
+        }
+        return res.status(200).json(false);
+    } catch (error) {
+        return res.status(500).json({ result: false });
+    }
 })
 
-router.post('/changeinfo', async (req, res, next) => {const { id, username } = req.body;
-    try{
+router.post('/changeinfo', async (req, res, next) => {
+    const { id, username } = req.body;
+    try {
         const user = await userController.changeinfo(id, username);
         res.status(200).json({ "user": user });
     } catch (error) {

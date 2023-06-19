@@ -1,18 +1,19 @@
 import { Image, StyleSheet, Text, ToastAndroid, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Popins } from '../../components/popins'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { TextInput } from 'react-native'
 import { CheckBox } from '@rneui/themed'
 import { TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import axios from 'axios'
 import { IPADDRESS } from '../../../network.config'
-import LoadingRedux from '../../components/dialog/DialogRedux'
+import DialogRedux from '../../components/dialog/DialogRedux'
 import { useDispatch } from 'react-redux'
 import { addUserData, removeUserData } from '../../redux/features/UserSilce'
 import { closeDialog, openDialog } from '../../redux/features/DialogSilce'
+import { changeRouteName, removeRouteName } from '../../redux/features/navigatorSilce'
 
 const SignIn: React.FC = () => {
     const dispatch = useDispatch();
@@ -20,7 +21,11 @@ const SignIn: React.FC = () => {
     const [checked, setChecked] = React.useState(false);
     const toggleCheckbox = () => setChecked(!checked);
     const [isUnlock, setUnlock] = React.useState(false);
+    const route = useRoute();
 
+    useEffect(() => {
+        dispatch(changeRouteName(route.name));
+    }, [])
     const [email, setemail] = React.useState('');
     const [password, setpassword] = React.useState('');
 
@@ -55,7 +60,7 @@ const SignIn: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <LoadingRedux />
+            <DialogRedux />
             <Text style={[styles.textHero, styles.text, {}]}>Sign In</Text>
             <View style={styles.containerInput}>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
@@ -182,7 +187,7 @@ const styles = StyleSheet.create({
     sizeContainerNomal: {
         borderRadius: 20,
         width: "100%",
-        height: 58,
+        height: 64,
     },
 
 });

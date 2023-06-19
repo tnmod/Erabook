@@ -9,7 +9,7 @@ import Account from '../screens/Account/Account';
 
 
 const Tab = createBottomTabNavigator();
-const BottomNavigator: React.FC = () => {
+const BottomNavigator = () => {
 
   return (
     <Tab.Navigator tabBar={(props) => <TabBottomBarCustom {...props} />}>

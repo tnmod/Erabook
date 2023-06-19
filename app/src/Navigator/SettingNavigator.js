@@ -17,7 +17,7 @@ const ImageTw = styled(Image);
 const ScrollviewTw = styled(ScrollView);
 
 
-const SettingNavigator: React.FC = () => {
+const SettingNavigator = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name='PaymentMenthods' component={PaymentMenthodsScreen} options={

@@ -1,13 +1,15 @@
 import { DialogType } from "./dialogState";
-import { UserType } from "./userState";
+import { NavigatorState } from "./navigatorState";
+import { OTPCode } from "./otpCodeState";
+import { UserState } from "./userState";
 
-interface UserState {
-  currentUser: UserType;
-}
+
 
 interface RootState {
   user: UserState;
   dialog: DialogType;
+  navigator: NavigatorState,
+  otpcode: OTPCode,
 }
 
-export type { RootState, UserState };
+export type { RootState };

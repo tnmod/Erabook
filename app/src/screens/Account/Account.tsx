@@ -16,6 +16,7 @@ const ViewTw = styled(View);
 const TouchableOpacityTw = styled(TouchableOpacity);
 const ImageTw = styled(Image);
 const ScrollViewTw = styled(ScrollView);
+
 export type RootStackParamList = {
   SettingNavigator: { id: number } | undefined;
 };
@@ -55,7 +56,7 @@ const Account = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.section}>
-        <TouchableOpacity style={styles.line} onPress={() => { navigation.navigate('SettingNavigator' as never) }}>
+        <TouchableOpacity style={styles.line} onPress={() => { navigation.navigate('SettingNavigator') }}>
           <View style={styles.line_left}>
             <View style={[styles.containerImage, { backgroundColor: '#edf9f1' }]}>
               <Image style={[styles.image, {tintColor:'#52ddad'}]} source={require('../../assets/icon-solid/Finance/credit-card.png')}></Image>
