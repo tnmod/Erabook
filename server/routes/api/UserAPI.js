@@ -63,7 +63,7 @@ router.post('/email', async (req, res, next) => {
         // for (let index = 0; index < random.length; index++) {
         //     numberFormat = numberFormat.concat(" : ", random[index].toString());
         // }
-        let subject = "Xác nhận đăng ký"
+        let subject = "OTP Code"
         let content = `
         <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
           <div style="background-color: #fff; border-radius: 10px; padding: 20px;">

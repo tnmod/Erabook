@@ -14,15 +14,15 @@ const transporter = mailer.createTransport({
     port: 465,
     secure: true, // use TLS
     auth: {
-        user: 'vulqps24441@fpt.edu.vn',
-        pass: 'aaickiiifgadwuzp'
+        user: 'otpmail.erabook@gmail.com',
+        pass: 'nmixzoghmzqkjkrh'
     },
 });
 
 const sendEmail = async (email, subject, content) =>{
     try {
         const mailOptions = {
-            from:'Erabook <vulqps24441@fpt.edu.vn>',
+            from:'Erabook <otpmail.erabook@gmail.com>',
             to: email,
             subject: subject,
             html: content
