@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Animated, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,13 +14,14 @@ import HomeScreen from '../screens/home/HomeScreen';
 import BottomNavigator from './BottomNavigator';
 import SettingNavigator from './SettingNavigator';
 import { RootState } from '../redux/rootState';
+import { closeDialog } from '../redux/features/DialogSilce';
 const Stack = createStackNavigator();
 
 
 const LoginRoute = () => {
     return (
         <Stack.Navigator initialRouteName='LoginScreen'>
-            <Stack.Screen name="LoginScreen" component={LoginScreen} options={{
+            <Stack.Screen name="LoginScreen" component={LoginNavigator} options={{
                 headerShown: false,
             }} />
             <Stack.Screen name='Terms' component={Terms_Agreement} options={
@@ -48,7 +49,6 @@ const HomeRoute = () => {
     )
 }
 const MainNagivator = () => {
-
     const user = useSelector((state) => state.user.currentUser);
     return (
         <View style={{ flex: 1 }}>
@@ -56,8 +56,6 @@ const MainNagivator = () => {
                 user ? (<HomeRoute />) : (<LoginRoute />)
             }
         </View>
-
-
     )
 }
 

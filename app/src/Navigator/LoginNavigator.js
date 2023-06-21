@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/rootState';
 import { changeRouteName } from '../redux/features/navigatorSilce';
 import { styled } from 'nativewind';
+import SignUpStepNavigator from './SignUpStepNavigator';
+import CompleteProfile from '../screens/login/Step/CompleteProfile';
 const Stack = createStackNavigator();
 const TextTw = styled(Text);
 const ViewTw = styled(View);
@@ -101,21 +103,33 @@ const LoginStack = () => {
 }
 const SignupOTPStack = () => {
     return (
-        <Stack.Navigator initialRouteName='CodeVerification'>
-            <Stack.Screen name='CodeVerification' component={CodeVerificator} options={{
-                headerShown: true,
-                title: '',
-                headerLeft: (props) => {
-                    const navigation = useNavigation();
-                    return (
-                        <TouchableOpacityTw onPress={() => { navigation.goBack() }} style={{ marginHorizontal: 24 }}>
-                            <TextTw className='font-bold text-lg text-gray-600' >Hủy</TextTw>
-                        </TouchableOpacityTw>
-                    )
-                },
-
-            }} />
+        <Stack.Navigator initialRouteName='CodeVerification' screenOptions={{
+            headerShown: true,
+            title: '',
+            headerLeft: (props) => {
+                const navigation = useNavigation();
+                return (
+                    <TouchableOpacityTw onPress={() => { navigation.goBack() }} style={{ marginHorizontal: 24 }}>
+                        <TextTw className='font-bold text-lg text-gray-600' >Hủy</TextTw>
+                    </TouchableOpacityTw>
+                )
+            },
+        }}>
+            <Stack.Screen name='SignUpStepStack' component={SignUpStepStack} options={{}} />
+            {/* <Stack.Screen name='CodeVerification' component={CodeVerificator} options={{}} />
+            <Stack.Screen name='CompleteProfile' component={CompleteProfile} options={{
+                cardStyleInterpolator: CardStyleInterpolators.forNoAnimation
+            }} /> */}
         </Stack.Navigator>
+    )
+}
+
+const SignUpStepStack = () => {
+    const status = useSelector((state) => state.otpcode.status);
+    return (
+        <ViewTw className='flex-1'>
+            {status ? (<CompleteProfile />) : (<CodeVerificator />)}
+        </ViewTw>
     )
 }
 export default LoginNavigator

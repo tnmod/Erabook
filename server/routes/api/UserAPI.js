@@ -9,7 +9,7 @@ router.post('/register', async (req, res, next) => {
         const user = await userController.register(email, password, username);
         res.status(200).json({ "user": user });
     } catch (error) {
-        res.status(400).json({ "error": error });
+        res.status(400).json({ "user": false });
     }
 })
 
@@ -17,20 +17,20 @@ router.post('/login', async (req, res, next) => {
     try {
         const { email, password } = req.body;
         const user = await userController.login(email, password);
-        res.status(200).json({ "user": user });
+        res.status(200).json({ result: true, "user": user });
     } catch (error) {
         res.status(400).json({ "error": error });
     }
 })
 
-router.get('/getall', async (req, res, next) => {
-    try {
-        const user = await userController.getAll();
-        res.status(200).json({ "user": user });
-    } catch (error) {
-        res.status(400).json({ "error": error });
-    }
-})
+// router.get('/getall', async (req, res, next) => {
+//     try {
+//         const user = await userController.getAll();
+//         res.status(200).json({ "user": user });
+//     } catch (error) {
+//         res.status(400).json({ "error": error });
+//     }
+// })
 
 router.post('/find', async (req, res, next) => {
     try {
@@ -82,10 +82,10 @@ router.post('/email', async (req, res, next) => {
         </div>
       `;
         const result = await userController.sendEmail(email, subject, content);
-        return res.status(200).json({ result });
+        return res.status(200).json(true);
     } catch (error) {
         console.log('send mail error: ', error);
-        return res.status(500).json({ result: false });
+        return res.status(500).json(false);
     }
 });
 
@@ -102,7 +102,7 @@ router.post('/veriCode', async (req, res, next) => {
         }
         return res.status(200).json(false);
     } catch (error) {
-        return res.status(500).json({ result: false });
+        return res.status(500).json(false);
     }
 })
 

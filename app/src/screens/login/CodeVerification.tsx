@@ -3,16 +3,16 @@ import React, { useEffect, useRef, useState } from 'react'
 import { styled } from 'nativewind';
 import { TextInput } from 'react-native-gesture-handler';
 import { LoginStackParamList } from '../../Navigator/RootStackParamList';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { Popins } from '../../components/popins';
 import { TextInputKeyPressEventData } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCode } from '../../redux/features/OTPCodeSilce';
+import { changeCode, successOTP } from '../../redux/features/OTPCodeSilce';
 import { RootState } from '../../redux/rootState';
-import { delay } from '@reduxjs/toolkit/dist/utils';
 import axios from 'axios';
 import { IPADDRESS } from '../../../network.config';
-import { openDialog } from '../../redux/features/DialogSilce';
+import { closeDialog, openDialog } from '../../redux/features/DialogSilce';
+import { hanleVeriOTPCode } from '../../services/UserAPIService';
 
 
 const TextTw = styled(Text);
@@ -28,8 +28,9 @@ type CodeVerificationProps = {
 
 type TextInputRef = TextInput & { focus: () => void };
 
-const CodeVerificator: React.FC<CodeVerificationProps> = ({ route }) => {
-    const { email, randomNumbers } = route.params;
+const CodeVerificator: React.FC<CodeVerificationProps> = () => {
+    const navigation = useNavigation();
+    const email = useSelector((state: RootState) => state.otpcode.email);
     const [isUnlock, setUnlock] = React.useState(false);
     const [password, setpassword] = React.useState('');
     const [confirm, setconfirm] = React.useState('');
@@ -38,7 +39,7 @@ const CodeVerificator: React.FC<CodeVerificationProps> = ({ route }) => {
     var numberInput = [-1, -1, -1, -1, -1, -1] as Array<number>;
     const inputRefs = useRef<TextInputRef[]>([]);
     const dispatch = useDispatch();
-    const numberA = useSelector((state: RootState) => state.otpcode.code);
+    const OTPCode = useSelector((state: RootState) => state.otpcode.code);
     const [indexFocus, setIndexFocus] = React.useState(-1);
 
 
@@ -63,9 +64,9 @@ const CodeVerificator: React.FC<CodeVerificationProps> = ({ route }) => {
 
     const handleInputChange = (value: number, index: number) => {
         if (value.toString() === "" || isNaN(value)) {
-            // Xử lý khi giá trị không hợp lệ (rỗng hoặc không phải số)
-            console.log(value, '0');
+
         } else {
+
             dispatch(changeCode({ index, value }));
             if (index === numberInput.length - 1) {
                 return;
@@ -85,13 +86,16 @@ const CodeVerificator: React.FC<CodeVerificationProps> = ({ route }) => {
 
     const hanleCode = async () => {
         dispatch(openDialog(0));
-        const sendOTP = await axios.post(IPADDRESS + '/api/user/veriCode', { code: numberA, email });
-        if (sendOTP.data) {
-            dispatch(openDialog({ choose: 1, title: "Success", content: "", buttontext: 'Next' }));
+        const result = await hanleVeriOTPCode(OTPCode, email);
+        if (result) {
+            dispatch(closeDialog());
+            dispatch(successOTP(email));
+            //navigation.navigate('CompleteProfile' as never);
         } else {
             dispatch(openDialog({ choose: 2, title: "Failed", content: "Wrong OTP entered!", buttontext: 'Try again' }));
         }
     }
+
 
     return (
         <ViewTw className='bg-white flex-1 container p-6'>

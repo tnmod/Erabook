@@ -14,6 +14,8 @@ import DialogRedux from '../../components/dialog/DialogRedux'
 import { closeDialog, openDialog } from '../../redux/features/DialogSilce'
 import { changeRouteName, removeRouteName } from '../../redux/features/navigatorSilce'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { hanleCheckEmail, hanleSendOTP } from '../../services/UserAPIService'
+import { addEmailOTP, removeCode } from '../../redux/features/OTPCodeSilce'
 
 function generateRandomNumbers() {
     const numbers = [];
@@ -45,9 +47,8 @@ const SignUp: React.FC = () => {
     }, [])
 
 
-    const [email, setemail] = React.useState('tinnguyen03071990@gmail.com');
-    const [username, setusername] = React.useState('tinnguyen03071990@gmail.com');
-
+    const [email, setemail] = React.useState('');
+    const [username, setusername] = React.useState('');
 
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
     const passwordRegx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -63,11 +64,11 @@ const SignUp: React.FC = () => {
         //     console.log("Phải chấp nhận điều khoản của chúng tôi");
         //     return;
         // }
-        // if (!emailRegex.test(email)) {
-        //     console.log("Sai email");
-        //     ToastAndroid.show("Sai định dạng email", ToastAndroid.SHORT)
-        //     return;
-        // }
+        if (!emailRegex.test(email)) {
+            console.log("Sai email");
+            ToastAndroid.show("Sai định dạng email", ToastAndroid.SHORT)
+            return;
+        }
         // if (!passwordRegx.test(password)) {
         //     console.log("Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số, 1 ký tự đặc biệt");
         //     ToastAndroid.show("Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 chữ thường, 1 số, 1 ký tự đặc biệt", ToastAndroid.SHORT)
@@ -81,14 +82,31 @@ const SignUp: React.FC = () => {
 
         try {
             dispatch(openDialog({ choose: 0 }));
-            const sendOTP = await axios.post(IPADDRESS + '/api/user/email', { email });
-            if (sendOTP) {
-                dispatch(closeDialog());
-                navigation.navigate('SignupOTPStack', { screen: 'CodeVerification', params: { email } } as never);
-            }else{
-                dispatch(closeDialog());
+            dispatch(removeCode());
+            const checkEmail = await hanleCheckEmail(email);
+            if (!checkEmail) {
+                const sendOTP = await hanleSendOTP(email);
+                if (sendOTP) {
+                    dispatch(closeDialog());
+                    dispatch(addEmailOTP(email));
+                    navigation.navigate('SignupOTPStack', { screen: 'CodeVerification', params: { email } } as never);
+
+                } else {
+                    dispatch(closeDialog());
+                }
+            } else {
+                dispatch(openDialog({ choose: 2, title: "Failed", content: "Please select a different email as this one is already registered", buttontext: 'Try again' }));
+                //ToastAndroid.show("Email đã được đăng ký", ToastAndroid.SHORT)
             }
 
+
+            // const sendOTP = await axios.post(IPADDRESS + '/api/user/email', { email });
+            // if (sendOTP.data) {
+            //     dispatch(closeDialog());
+            //     navigation.navigate('SignupOTPStack', { screen: 'CodeVerification', params: { email } } as never);
+            // } else {
+            //     dispatch(closeDialog());
+            // }
 
             //đổi link
             //dispatch(openDialog(0));
@@ -116,7 +134,7 @@ const SignUp: React.FC = () => {
             <View style={{ flexGrow: 1 }}>
                 <View style={[styles.containerInput,]}>
                     <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                        <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => { setemail(text); setusername(text); }} />
+                        <TextInput keyboardType='email-address' style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => { setemail(text); setusername(text); }} />
                         <Icon name='user' size={18} color={'#637899'} />
                     </View>
                     {/* <View style={[styles.inputHero, styles.sizeContainerNomal]}>

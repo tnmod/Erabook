@@ -22,7 +22,6 @@ const SignIn: React.FC = () => {
     const toggleCheckbox = () => setChecked(!checked);
     const [isUnlock, setUnlock] = React.useState(false);
     const route = useRoute();
-
     useEffect(() => {
         dispatch(changeRouteName(route.name));
     }, [])
@@ -42,7 +41,7 @@ const SignIn: React.FC = () => {
             dispatch(openDialog({ choose: 0 }));
             const result = await axios.post(IPADDRESS + '/api/user/login', { email, password });
             if (result.data.user == false || result.data.user == null) {
-                ToastAndroid.show("Email hoặc mật khẩu không đúng", ToastAndroid.SHORT);
+                //ToastAndroid.show("Email hoặc mật khẩu không đúng", ToastAndroid.SHORT);
                 dispatch(openDialog({ choose: 2, title: 'Failed!', content: 'Incorrect email or password', buttontext: 'Try again' }));
                 return;
             }
@@ -56,6 +55,7 @@ const SignIn: React.FC = () => {
         } catch (error) {
             console.log(error);
         }
+
     }
 
     return (
@@ -64,7 +64,7 @@ const SignIn: React.FC = () => {
             <Text style={[styles.textHero, styles.text, {}]}>Sign In</Text>
             <View style={styles.containerInput}>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>
-                    <TextInput style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => { setemail(text); }} />
+                    <TextInput keyboardType='email-address' style={styles.inputField} placeholder='Email' cursorColor={'#637899'} onChangeText={text => { setemail(text); }} />
                     <Icon name='user' size={18} color={'#637899'} />
                 </View>
                 <View style={[styles.inputHero, styles.sizeContainerNomal]}>

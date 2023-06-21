@@ -3,6 +3,7 @@ interface DialogType {
     title: string,
     content: string,
     buttontext: string,
-    actionType: number
+    actionType: number,
+    visiable:boolean
 }
 export type { DialogType };

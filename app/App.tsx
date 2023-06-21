@@ -20,7 +20,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import MainNagivator from './src/Navigator/MainNavigator';
+import MainNavigator from './src/Navigator/MainNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { store } from './src/redux/app/store';
 import { Provider } from 'react-redux';
@@ -31,6 +31,8 @@ import Preferences from './src/screens/setting/Preferences';
 import Security from './src/screens/setting/Security';
 import { styled } from 'nativewind';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import SplashScreen from './src/screens/SplashScreen/SplashScreen';
+import AppNavigator from './src/Navigator/AppNavigator';
 
 
 
@@ -69,10 +71,10 @@ const App: React.FC<Model> = () => {
   return (
     <Provider store={store} >
       <View style={{ flex: 1 }}>
-        <StatusBarIOS />
-        <StatusBar hidden={true} />
+        {/* <StatusBarIOS /> */}
+        <StatusBar backgroundColor={"#FFFFFF"} barStyle={'dark-content'} hidden={false} />
         <NavigationContainer>
-          <MainNagivator />
+          <AppNavigator />
         </NavigationContainer>
       </View>
     </Provider>
