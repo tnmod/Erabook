@@ -23,10 +23,15 @@ const PersonalInfo: React.FC = () => {
     const navigation = useNavigation();
     const user = useSelector((state: RootState) => state.user.currentUser);
     const dispatch = useDispatch();
+    const usernameRegx = /^[a-zA-Z0-9_\s]{3,16}$/;
     const [newName, setNewName] = useState(user.username);
     const updateUser = async () => {
-        if (newName == '' || newName == undefined || newName == null) {
-            ToastAndroid.show("Thiếu thông tin", ToastAndroid.SHORT);
+        if (newName.length == 0) {
+            dispatch(openDialog({ choose: 2, title: 'Missing information', content: "Please fill in all the required fields", buttontext: "Try again" }));
+            return;
+        }
+        if (!usernameRegx.test(newName)) {
+            dispatch(openDialog({ choose: 2, title: 'Invalid username', content: "Invalid username. Username must be between 3 and 16 characters long and can only contain letters, numbers, and underscores.", buttontext: "Try again" }));
             return;
         }
         if (newName == user.username) {
@@ -34,19 +39,18 @@ const PersonalInfo: React.FC = () => {
             return;
         } else {
             const result = await axios.post(IPADDRESS + '/api/user/changeinfo', { id: user._id, username: newName });
+            console.log(user._id, "===",newName);
             if (result.data.user == false || result.data.user == null) {
-                dispatch(openDialog({ choose: 2, title: "Oops!", content: "something went wrong", buttontext: "Try again", actionType:1 }))
-                ToastAndroid.show("Failed", ToastAndroid.SHORT);
+                dispatch(openDialog({ choose: 2, title: "Oops!", content: "something went wrong", buttontext: "Try again", actionType: 1 }))
                 return;
             } else {
-                dispatch(openDialog({ choose: 1, title: "Success", content: "Successfully save data!", buttontext: "Go back", actionType:1 }))
+                dispatch(openDialog({ choose: 1, title: "Success", content: "Successfully save data!", buttontext: "Go back", actionType: 1 }))
                 dispatch(addUserData(result.data.user));
-                
                 return;
             }
         }
     }
-    
+
     return (
         <ViewTw className='flex-1 bg-white items-center'>
             <DialogRedux />

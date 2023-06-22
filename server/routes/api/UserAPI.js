@@ -107,8 +107,8 @@ router.post('/veriCode', async (req, res, next) => {
 })
 
 router.post('/changeinfo', async (req, res, next) => {
-    const { id, username } = req.body;
     try {
+        const { id, username } = req.body;
         const user = await userController.changeinfo(id, username);
         res.status(200).json({ "user": user });
     } catch (error) {
@@ -118,8 +118,9 @@ router.post('/changeinfo', async (req, res, next) => {
 router.post('/changepassword', async (req, res, next) => {
     try {
         const { id, email, newpassword, oldpassword } = req.body;
-        const user = await userController.changepassword(id, email, newpassword, oldpassword);
-        res.status(200).json({ "user": user });
+        const result = await userController.changepassword(id, email, newpassword, oldpassword);
+        console.log(result);
+        res.status(200).json({ "result": result });
     } catch (error) {
         res.status(400).json({ "error": error });
     }

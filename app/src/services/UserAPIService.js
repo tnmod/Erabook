@@ -40,6 +40,17 @@ const hanleRegister = async (email, password, username) => {
     }
 }
 
+const hanleChangePassword = async (id, email, newpassword, oldpassword) => {
+    const result = await axios.post(IPADDRESS + '/api/user/changepassword', { id, email, newpassword, oldpassword });
+    console.log(result.data.result);
+
+    if (result.data.result == false || result.data.result == null) {
+        return false;
+    } else {
+        return result.data.user;
+    }
+}
 
 
-export { hanleCheckEmail, hanleVeriOTPCode, hanleSendOTP, hanleRegister }
+
+export { hanleCheckEmail, hanleVeriOTPCode, hanleSendOTP, hanleRegister, hanleChangePassword }
