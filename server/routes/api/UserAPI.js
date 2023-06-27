@@ -119,7 +119,6 @@ router.post('/changepassword', async (req, res, next) => {
     try {
         const { id, email, newpassword, oldpassword } = req.body;
         const result = await userController.changepassword(id, email, newpassword, oldpassword);
-        console.log(result);
         res.status(200).json({ "result": result });
     } catch (error) {
         res.status(400).json({ "error": error });
